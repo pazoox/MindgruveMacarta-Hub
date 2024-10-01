@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindgruveMacarta Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">MindgruveMacarta Hub</div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Brands Section -->
+        <section id="brands" class="section">
+            <div class="section-header">
+                <h1>Brands</h1>
+                <!-- Botão para abrir o formulário -->
+                <button class="add-button" onclick="toggleBrandForm()">Add New Brand</button>
+            </div>
+            
+            <!-- Formulário para adicionar nova marca -->
+            <div id="brand-form" style="display: none;">
+                <h3>New Brand</h3>
+                <input type="text" id="brand-name" placeholder="Brand Name">
+                <input type="file" id="brand-image" accept="image/*">
+                <button onclick="addBrand()">Add</button>
+            </div>
+            
+            <!-- Listagem das brands adicionadas -->
+            <div id="brand-list">
+                <!-- Itens serão carregados dinamicamente -->
+            </div>
+        </section>
+
+        <!-- Teams Section -->
+        <section id="teams" class="section">
+            <div class="section-header">
+                <h1>Teams</h1>
+                <!-- Botão para abrir o formulário, somente para usuários com permissão -->
+                <button class="add-button" id="add-team-btn" onclick="toggleTeamForm()">Add New Team</button>
+            </div>
+
+            <!-- Formulário para adicionar novo time -->
+            <div id="team-form" style="display: none;">
+                <h3>New Team</h3>
+                <input type="text" id="team-name" placeholder="Team Name">
+                <input type="file" id="team-image" accept="image/*">
+                <button onclick="addTeam()">Add</button>
+            </div>
+            
+            <!-- Listagem dos times adicionados -->
+            <div id="team-list">
+                <!-- Itens serão carregados dinamicamente -->
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Função para exibir ou ocultar o formulário de adicionar brand
+        function toggleBrandForm() {
+            const form = document.getElementById('brand-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Função para exibir ou ocultar o formulário de adicionar team
+        function toggleTeamForm() {
+            const form = document.getElementById('team-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Carregar itens do Local Storage
+        function loadItems() {
+            loadBrands();
+            loadTeams();
+
+            // Verificar permissões do usuário
+            const userType = localStorage.getItem('userType');
+            if (userType === 'limited') {
+                document.getElementById('add-team-btn').style.display = 'none';
+            }
+        }
+
+        // Carregar marcas
+        function loadBrands() {
+            const brandList = document.getElementById('brand-list');
+            const items = JSON.parse(localStorage.getItem('brands')) || [];
+
+            items.sort((a, b) => a.name.localeCompare(b.name));
+            brandList.innerHTML = '';
+
+            items.forEach(item => {
+                const newBrand = document.createElement('div');
+                newBrand.className = 'brand-card';
+                newBrand.onclick = function() {
+                    window.location.href = `./brand.html?name=${encodeURIComponent(item.name)}`;
+                };
+
+                newBrand.innerHTML = `
+                    ${item.image ? `<img src="${item.image}" alt="${item.name}" class="brand-image">` : ''}
+                    <h2 class="brand-name">${item.name}</h2>
+                `;
+
+                brandList.appendChild(newBrand);
+            });
+        }
+
+        // Carregar times
+        function loadTeams() {
+            const teamList = document.getElementById('team-list');
+            const teams = JSON.parse(localStorage.getItem('teams')) || [];
+            teamList.innerHTML = '';
+
+            teams.forEach(team => {
+                const newTeam = document.createElement('div');
+                newTeam.className = 'team-card';
+                newTeam.onclick = function() {
+                    window.location.href = `./team.html?name=${encodeURIComponent(team.name)}`;
+                };
+
+                newTeam.innerHTML = `
+                    ${team.image ? `<img src="${team.image}" alt="${team.name}" class="team-image">` : ''}
+                    <h2 class="team-name">${team.name}</h2>
+                `;
+
+                teamList.appendChild(newTeam);
+            });
+        }
+
+        // Função para adicionar uma nova marca
+        function addBrand() {
+            const brandName = document.getElementById('brand-name').value.trim();
+            const brandImageInput = document.getElementById('brand-image');
+
+            if (!brandName) {
+                alert('Please enter a brand name.');
+                return;
+            }
+
+            const items = JSON.parse(localStorage.getItem('brands')) || [];
+            if (items.some(item => item.name === brandName)) {
+                alert('This brand already exists.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const brandImage = event.target.result;
+
+                items.push({ name: brandName, image: brandImage });
+                localStorage.setItem('brands', JSON.stringify(items));
+                loadBrands();
+
+                document.getElementById('brand-name').value = '';
+                document.getElementById('brand-image').value = '';
+                toggleBrandForm();
+            };
+
+            if (brandImageInput.files[0]) {
+                reader.readAsDataURL(brandImageInput.files[0]);
+            } else {
+                items.push({ name: brandName, image: null });
+                localStorage.setItem('brands', JSON.stringify(items));
+                loadBrands();
+
+                document.getElementById('brand-name').value = '';
+                toggleBrandForm();
+            }
+        }
+
+        // Função para adicionar um novo time
+        function addTeam() {
+            const teamName = document.getElementById('team-name').value.trim();
+            const teamImageInput = document.getElementById('team-image');
+
+            if (!teamName) {
+                alert('Please enter a team name.');
+                return;
+            }
+
+            const teams = JSON.parse(localStorage.getItem('teams')) || [];
+            if (teams.some(team => team.name === teamName)) {
+                alert('This team already exists.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const teamImage = event.target.result;
+
+                teams.push({ name: teamName, image: teamImage });
+                localStorage.setItem('teams', JSON.stringify(teams));
+                loadTeams();
+
+                document.getElementById('team-name').value = '';
+                document.getElementById('team-image').value = '';
+                toggleTeamForm();
+            };
+
+            if (teamImageInput.files[0]) {
+                reader.readAsDataURL(teamImageInput.files[0]);
+            } else {
+                teams.push({ name: teamName, image: null });
+                localStorage.setItem('teams', JSON.stringify(teams));
+                loadTeams();
+
+                document.getElementById('team-name').value = '';
+                toggleTeamForm();
+            }
+        }
+
+        // Carregar os itens ao iniciar a página
+        window.onload = loadItems;
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000" viewBox="0 0 1000 1000">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-services-icon);
+      }
+
+      .cls-2 {
+        fill: #00adef;
+      }
+
+      .cls-3 {
+        fill: #ed1b24;
+      }
+
+      .cls-4 {
+        fill: #ffde17;
+      }
+
+      .cls-5 {
+        fill: #212121;
+      }
+    </style>
+    <clipPath id="clip-services-icon">
+      <rect width="1000" height="1000"/>
+    </clipPath>
+  </defs>
+  <g id="services-icon" class="cls-1">
+    <circle id="Ellipse_13" data-name="Ellipse 13" class="cls-2" cx="165" cy="165" r="165" transform="translate(89 335)"/>
+    <ellipse id="Ellipse_14" data-name="Ellipse 14" class="cls-3" cx="164" cy="165" rx="164" ry="165" transform="translate(254 335)"/>
+    <ellipse id="Ellipse_15" data-name="Ellipse 15" class="cls-4" cx="164" cy="165" rx="164" ry="165" transform="translate(419 335)"/>
+    <circle id="Ellipse_16" data-name="Ellipse 16" class="cls-5" cx="165" cy="165" r="165" transform="translate(582 335)"/>
+  </g>
+</svg>

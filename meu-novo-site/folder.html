@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="#" class="back-button" id="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+            </svg>
+        </a>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Título da pasta com ícone de remoção -->
+        <div class="folder-header">
+            <h1 class="folder-name-title" id="folder-title">Folder Name</h1>
+            <div id="remove-folder-button" class="remove-button-title" style="display: none;" onclick="removeFolder()">
+                <img src="./icons/x-icon.svg" alt="Remove">
+            </div>
+        </div>
+
+        <!-- Botões de edição e adicionar -->
+        <div class="folder-buttons">
+            <button class="edit-button-top" onclick="toggleEditMode()">Edit</button>
+            <button class="add-button-top" onclick="toggleAddForm()">Add New +</button>
+        </div>
+
+        <!-- Formulário para adicionar novo link ou subpasta -->
+        <div id="add-form" class="form-container" style="display: none;">
+            <h3 id="form-title">Add New Item</h3>
+            <input type="text" id="item-name" placeholder="Item Name" class="form-input">
+            <input type="url" id="item-url" placeholder="Item URL (if applicable)" class="form-input">
+            <label class="form-checkbox-label">
+                <input type="checkbox" id="is-subfolder" class="form-checkbox"> Is this a Folder?
+            </label>
+            <button onclick="saveItem()" class="form-button">Save</button>
+        </div>
+
+        <!-- Área para listar os itens -->
+        <div id="item-list">
+            <!-- Lista de links/subpastas será carregada aqui -->
+        </div>
+    </main>
+
+    <script>
+        let editMode = false;
+        let currentTeamName = '';
+        let currentFolderName = '';
+
+        function loadFolder() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentTeamName = urlParams.get('team');
+            currentFolderName = urlParams.get('folder');
+            document.getElementById('folder-title').textContent = currentFolderName;
+            document.getElementById('back-button').href = `services.html?name=${currentTeamName}`;
+
+            const userType = localStorage.getItem('userType');
+            if (userType === 'admin') {
+                document.querySelector('.folder-buttons').style.display = 'flex';
+            } else {
+                document.querySelector('.folder-buttons').style.display = 'none';
+            }
+
+            loadItems(currentFolderName);
+        }
+
+        function toggleEditMode() {
+            const userType = localStorage.getItem('userType');
+            if (userType !== 'admin') {
+                alert('Only admin can edit.');
+                return;
+            }
+
+            editMode = !editMode;
+            document.querySelectorAll('.remove-button-card').forEach(button => {
+                button.style.display = editMode ? 'block' : 'none';
+            });
+
+            const removeFolderButton = document.getElementById('remove-folder-button');
+            removeFolderButton.style.display = editMode ? 'block' : 'none';
+        }
+
+        function toggleAddForm() {
+            const form = document.getElementById('add-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function saveItem() {
+            const itemName = document.getElementById('item-name').value.trim();
+            const itemUrl = document.getElementById('item-url').value.trim();
+            const isSubfolder = document.getElementById('is-subfolder').checked;
+
+            if (!itemName) {
+                alert('Please enter a name.');
+                return;
+            }
+
+            const items = JSON.parse(localStorage.getItem(`${currentTeamName}-${currentFolderName}`)) || [];
+
+            if (isSubfolder) {
+                items.push({ name: itemName, isFolder: true });
+            } else {
+                if (!itemUrl) {
+                    alert('Please enter a URL for the link.');
+                    return;
+                }
+                items.push({ name: itemName, url: itemUrl, isFolder: false });
+            }
+
+            localStorage.setItem(`${currentTeamName}-${currentFolderName}`, JSON.stringify(items));
+            loadItems(currentFolderName);
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-url').value = '';
+            document.getElementById('is-subfolder').checked = false;
+            toggleAddForm();
+        }
+
+        function loadItems(folderName) {
+            const items = JSON.parse(localStorage.getItem(`${currentTeamName}-${folderName}`)) || [];
+            const itemList = document.getElementById('item-list');
+            itemList.innerHTML = '';
+
+            items.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'link-card';
+                itemDiv.dataset.index = index;
+
+                const removeButton = document.createElement('div');
+                removeButton.className = 'remove-button-card';
+                removeButton.style.display = editMode ? 'block' : 'none';
+                removeButton.onclick = function(event) {
+                    event.stopPropagation();
+                    removeItem(index);
+                };
+                removeButton.innerHTML = `<img src="./icons/x-icon.svg" alt="Remove">`;
+
+                if (item.isFolder) {
+                    itemDiv.innerHTML = `
+                        <img src="./icons/folder-icon.svg" alt="Folder Icon" class="link-icon smaller-icon">
+                        <h3>${item.name}</h3>
+                    `;
+                    itemDiv.onclick = function(event) {
+                        if (!event.target.closest('.remove-button-card')) {
+                            window.location.href = `folder.html?team=${currentTeamName}&folder=${item.name}`;
+                        }
+                    };
+                } else {
+                    itemDiv.innerHTML = `
+                        <img src="./icons/link-icon.svg" alt="Link Icon" class="link-icon smaller-icon">
+                        <h3>${item.name}</h3>
+                    `;
+                    itemDiv.onclick = function(event) {
+                        if (!event.target.closest('.remove-button-card')) {
+                            window.open(item.url, '_blank');
+                        }
+                    };
+                }
+
+                itemDiv.appendChild(removeButton);
+                itemList.appendChild(itemDiv);
+            });
+        }
+
+        function removeItem(index) {
+            const items = JSON.parse(localStorage.getItem(`${currentTeamName}-${currentFolderName}`)) || [];
+            items.splice(index, 1);
+            localStorage.setItem(`${currentTeamName}-${currentFolderName}`, JSON.stringify(items));
+            loadItems(currentFolderName);
+        }
+
+        function removeFolder() {
+            const confirmation = confirm(`Would you like to delete the folder: ${currentFolderName}?`);
+            if (confirmation) {
+                localStorage.removeItem(`${currentTeamName}-${currentFolderName}`);
+                const serviceItems = JSON.parse(localStorage.getItem(`${currentTeamName}-services`)) || [];
+                const updatedItems = serviceItems.filter(item => item.name !== currentFolderName || !item.isFolder);
+                localStorage.setItem(`${currentTeamName}-services`, JSON.stringify(updatedItems));
+                
+                window.location.href = `services.html?name=${currentTeamName}`;
+            }
+        }
+
+        window.onload = loadFolder;
+    </script>
+
+    <style>
+        /* Nome da pasta e ícone de remoção alinhados */
+        .folder-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .folder-name-title {
+            font-size: 32px;
+            color: #fff;
+            margin: 20px 0;
+        }
+
+        .remove-button-title {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Botões de edição e adicionar alinhados à direita */
+        .folder-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin: 20px;
+        }
+
+        /* Estilo do formulário */
+        .form-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 8px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .form-input {
+            width: 95%; /* Alinhando com o botão de Save */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #555;
+            color: #fff;
+        }
+
+        .form-checkbox-label {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .form-checkbox {
+            margin-right: 10px;
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #23CB60;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .form-button:hover {
+            background-color: #1FA048;
+        }
+
+        /* Ícones menores */
+        .remove-button-title img,
+        .remove-button-card img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Ícones ajustados */
+        .smaller-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo para os cards */
+        .link-card {
+            width: 200px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #2b2b2b;
+            text-align: center;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Botão de remoção nos cards */
+        .remove-button-card {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+            background-color: transparent;
+            z-index: 10;
+        }
+
+        /* Efeito de hover nos cards */
+        .link-card:hover {
+            background-color: #3a3a3a;
+            transform: scale(1.05);
+        }
+
+        /* Container para os links/subpastas */
+        #item-list {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+    </style>
+</body>
+</html>

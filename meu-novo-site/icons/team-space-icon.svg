@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="500" viewBox="0 0 500 500">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-team-space-icon);
+      }
+
+      .cls-2 {
+        fill: #909090;
+      }
+    </style>
+    <clipPath id="clip-team-space-icon">
+      <rect width="500" height="500"/>
+    </clipPath>
+  </defs>
+  <g id="team-space-icon" class="cls-1">
+    <g id="Group_9" data-name="Group 9" transform="translate(-14.878 -8.045)">
+      <g id="Group_6" data-name="Group 6" transform="translate(194.592 144.034)">
+        <ellipse id="Ellipse_11" data-name="Ellipse 11" class="cls-2" cx="45.755" cy="45.377" rx="45.755" ry="45.377" transform="translate(24.201 0)"/>
+        <path id="Subtraction_3" data-name="Subtraction 3" class="cls-2" d="M140.572,59.742H0L34.4,0A58.551,58.551,0,0,0,70.558,12.34,58.587,58.587,0,0,0,106.334.29Z" transform="translate(0 92.271)"/>
+      </g>
+      <g id="Group_7" data-name="Group 7" transform="translate(335.164 220.041)">
+        <ellipse id="Ellipse_11-2" data-name="Ellipse 11" class="cls-2" cx="45.755" cy="45.377" rx="45.755" ry="45.377" transform="translate(24.201 0)"/>
+        <path id="Subtraction_3-2" data-name="Subtraction 3" class="cls-2" d="M140.572,59.742H0L34.4,0A58.551,58.551,0,0,0,70.558,12.34,58.587,58.587,0,0,0,106.334.29Z" transform="translate(0 92.271)"/>
+      </g>
+      <g id="Group_8" data-name="Group 8" transform="translate(54.021 220.041)">
+        <ellipse id="Ellipse_11-3" data-name="Ellipse 11" class="cls-2" cx="45.755" cy="45.377" rx="45.755" ry="45.377" transform="translate(24.201 0)"/>
+        <path id="Subtraction_3-3" data-name="Subtraction 3" class="cls-2" d="M140.572,59.742H0L34.4,0A58.551,58.551,0,0,0,70.558,12.34,58.587,58.587,0,0,0,106.334.29Z" transform="translate(0 92.271)"/>
+      </g>
+    </g>
+  </g>
+</svg>

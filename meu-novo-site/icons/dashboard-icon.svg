@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="107" height="95" viewBox="0 0 107 95">
+  <defs>
+    <clipPath id="clip-dashboard-icon">
+      <rect width="107" height="95"/>
+    </clipPath>
+  </defs>
+  <g id="dashboard-icon" clip-path="url(#clip-dashboard-icon)">
+    <g id="Group_5" data-name="Group 5" transform="translate(-149 -276.408)">
+      <path id="Subtraction_1" data-name="Subtraction 1" d="M47.5,95A47.512,47.512,0,0,1,29.011,3.733,47.478,47.478,0,0,1,71.879,6.724L47.945,47.944H95A47.461,47.461,0,0,1,47.5,95Z" transform="translate(149 276.408)" fill="#00adef"/>
+      <path id="Polygon_2" data-name="Polygon 2" d="M23,0,46,41H0Z" transform="translate(210 276.408)" fill="#00adef"/>
+    </g>
+  </g>
+</svg>

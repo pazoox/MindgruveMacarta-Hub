@@ -1,0 +1,393 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #1b1b1b;
+    color: white;
+}
+
+/* Login Page Background */
+.login-page {
+    background-image: url('./icons/login-background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10%;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #000;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Main Content */
+.section {
+    padding: 40px 60px;
+    border-bottom: 1px solid #333;
+    position: relative;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section h1 {
+    font-size: 32px;
+    color: #fff;
+}
+
+/* Add Button */
+.add-button {
+    background-color: #23CB60;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Formulários */
+#brand-form, #team-form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #444;
+    border-radius: 5px;
+}
+
+#brand-form input, #team-form input {
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #555;
+    color: white;
+    width: 200px;
+}
+
+#brand-form button, #team-form button {
+    background-color: #23CB60;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Card Containers */
+#brand-list, #team-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Card Styles */
+.brand-card, .team-card {
+    width: 200px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #2b2b2b;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Brand and Team Images */
+.brand-image, .team-image {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+/* Brand and Team Names */
+.brand-name, .team-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: center;
+    width: 100%;
+}
+
+/* Hover Effects on Cards */
+.brand-card:hover, .team-card:hover {
+    background-color: #3a3a3a;
+    transform: scale(1.05);
+}
+
+/* Button Hover Effects */
+.navbar nav ul li a:hover,
+.add-button:hover,
+#brand-form button:hover,
+#team-form button:hover,
+#edit-form button:hover,
+#add-link-form button:hover {
+    background-color: #1C9247;
+}
+
+/* Brand Page Header */
+.brand-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Edit and Add Buttons in Brand Page */
+.brand-buttons {
+    position: absolute;
+    top: 250px;
+    right: 40px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Edit Button (Top) */
+.edit-button-top {
+    background-color: #00ADEF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Add Button (Top) */
+.add-button-top {
+    background-color: #23CB60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Hover Effects for Top Buttons */
+.edit-button-top:hover {
+    background-color: #007BB5;
+}
+
+.add-button-top:hover {
+    background-color: #1FA048;
+}
+
+/* Forms for Editing and Adding Links */
+#edit-form, #add-link-form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #444;
+    border-radius: 5px;
+}
+
+#edit-form input, #add-link-form input {
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #555;
+    color: white;
+    width: 200px;
+}
+
+/* Centering the Hub Title */
+#hub-title {
+    text-align: center;
+    font-size: 20px;
+    color: white;
+    margin-top: 20px;
+}
+
+/* Link Card Styles */
+#link-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.link-card {
+    position: relative;
+    width: 150px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #2b2b2b;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Larger Icons */
+.link-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+/* Hover Effects on Link Cards */
+.link-card:hover {
+    background-color: #3a3a3a;
+    transform: scale(1.05);
+}
+
+/* Remove Button (SVG Icon) */
+.remove-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    display: none;
+}
+
+.remove-button img {
+    width: 15px;
+    height: 15px;
+}
+
+/* Edit Button */
+.edit-button {
+    background-color: #00ADEF;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px auto;
+    display: none;
+    width: fit-content;
+}
+
+.edit-button:hover {
+    background-color: #007BB5;
+}
+
+/* Image Card in Brand */
+.image-card {
+    width: 300px;
+    height: 200px;
+    margin: 20px auto;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #2b2b2b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#brand-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Shake Effect */
+.shake {
+    animation: shake-animation 0.5s infinite;
+}
+
+@keyframes shake-animation {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Link Card Drag Effect */
+.link-card {
+    transition: transform 0.2s ease;
+}
+
+/* Remove Button for Brands (SVG Icon) */
+.remove-brand-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    display: none;
+}
+
+.remove-brand-button img {
+    width: 15px;
+    height: 15px;
+}
+
+/* Login Page */
+.login-container {
+    width: 300px;
+    padding: 20px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    text-align: center;
+    margin-right: 0px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+    background-color: #555;
+    color: white;
+}
+
+.login-container button {
+    background-color: #00ADEF;
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 12.5%;
+    position: absolute;
+    bottom: 480px;
+    right: 250px;
+}
+
+.login-container button:hover {
+    background-color: #0091C8;
+}

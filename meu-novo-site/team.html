@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="index.html" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+            </svg>
+        </a>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Nome do Team -->
+        <h1 class="team-name-title" id="team-title">Team Name</h1>
+
+        <!-- Botões de navegação específicos do Team -->
+        <div id="link-section">
+            <div id="link-list">
+                <!-- Botão "Services" -->
+                <div class="link-card" onclick="navigateTo('services.html')">
+                    <img src="./icons/services-icon.svg" alt="Services Icon" class="link-icon large-icon">
+                    <h3>Services</h3>
+                </div>
+                <!-- Botão "Team Space" -->
+                <div class="link-card" onclick="navigateTo('teamspace.html')">
+                    <img src="./icons/team-space-icon.svg" alt="Team Space Icon" class="link-icon large-icon">
+                    <h3>Team Space</h3>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Função para navegar para uma página específica
+        function navigateTo(page) {
+            // Redireciona para a página desejada com o nome do time como parâmetro
+            window.location.href = `${page}?name=${currentTeamName}`;
+        }
+
+        let currentTeamName = '';
+
+        // Função para carregar o nome do time
+        function loadTeam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const teamNameFromURL = urlParams.get('name');
+
+            // Tenta obter o nome do time da URL ou do localStorage
+            if (teamNameFromURL) {
+                currentTeamName = teamNameFromURL;
+                localStorage.setItem('currentTeamName', currentTeamName); // Atualiza no localStorage
+            } else {
+                currentTeamName = localStorage.getItem('currentTeamName') || 'Team Name';
+            }
+
+            document.getElementById('team-title').textContent = `${currentTeamName} Team`;
+        }
+
+        window.onload = loadTeam;
+    </script>
+
+    <style>
+        /* Nome do time centralizado */
+        .team-name-title {
+            text-align: center;
+            font-size: 32px;
+            color: #fff;
+            margin: 20px 0;
+        }
+
+        /* Ícones maiores */
+        .large-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo para os cards */
+        .link-card {
+            width: 200px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #2b2b2b;
+            text-align: center;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Efeito de hover nos cards */
+        .link-card:hover {
+            background-color: #3a3a3a;
+            transform: scale(1.05);
+        }
+
+        /* Container para os links */
+        #link-list {
+            display: flex;
+            justify-content: center;
+            gap: 40px; /* Espaço entre os ícones */
+            margin-top: 40px;
+        }
+    </style>
+</body>
+</html>

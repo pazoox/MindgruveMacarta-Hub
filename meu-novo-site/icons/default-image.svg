@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="500" viewBox="0 0 500 500">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-default-image);
+      }
+
+      .cls-2 {
+        fill: #343434;
+      }
+
+      .cls-3 {
+        fill: #989898;
+        font-size: 67px;
+        font-family: LCDMono2Normal, LCDMono2;
+      }
+    </style>
+    <clipPath id="clip-default-image">
+      <rect width="500" height="500"/>
+    </clipPath>
+  </defs>
+  <g id="default-image" class="cls-1">
+    <path id="Subtraction_2" data-name="Subtraction 2" class="cls-2" d="M98,273.628h0A107.006,107.006,0,0,1,98,60.373V273.626Zm19-.089h0V60.461a107.008,107.008,0,0,1,0,213.077Z" transform="translate(292.427 56.252) rotate(45)"/>
+    <text id="No_Image" data-name="No Image" class="cls-3" transform="translate(113 277)"><tspan x="0" y="0">No Image</tspan></text>
+  </g>
+</svg>

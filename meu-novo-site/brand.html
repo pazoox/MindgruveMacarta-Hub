@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <style>
+        /* Centralizar o título da marca */
+        .brand-name-title {
+            text-align: center;
+            font-size: 32px;
+            color: #fff;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Estilo do formulário */
+        .form-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Centraliza verticalmente os elementos dentro do card */
+        }
+
+        .form-input, .form-button {
+            width: 90%; /* Largura ajustada para ficar igual ao botão */
+            max-width: 400px; /* Limitar o tamanho máximo dos inputs */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .form-input {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .form-button {
+            background-color: #23CB60;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .form-button:hover {
+            background-color: #1FA048;
+        }
+
+        .form-container h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Estilo do card de imagem */
+        .image-card {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #2b2b2b;
+            border-radius: 8px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        #brand-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .remove-brand-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="index.html" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+            </svg>
+        </a>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Nome da brand -->
+        <h1 class="brand-name-title" id="brand-title"></h1>
+
+        <!-- Botões de edição e adicionar fora do card da imagem -->
+        <div class="brand-buttons">
+            <button class="edit-button-top" onclick="toggleEditMode()">Edit</button>
+            <button class="add-button-top" onclick="toggleAddLinkForm()">Add New +</button>
+        </div>
+
+        <!-- Card para a imagem da brand -->
+        <div id="brand-image-card" class="image-card">
+            <img id="brand-image" alt="Brand Image">
+            <div class="remove-brand-button" onclick="removeBrand()">
+                <img src="./icons/x-icon.svg" alt="Remove">
+            </div>
+        </div>
+
+        <!-- Formulário para adicionar/editar link -->
+        <div id="add-link-form" class="form-container" style="display: none;">
+            <h3 id="link-form-title">Add New Link</h3>
+            <input type="text" id="link-name" placeholder="Link Name" class="form-input">
+            <input type="url" id="link-url" placeholder="Link URL" class="form-input">
+            <button id="link-save-button" onclick="saveLink()" class="form-button">Save</button>
+        </div>
+
+        <!-- Área para listar os links -->
+        <div id="link-section">
+            <h3 id="hub-title">Hub</h3>
+            <div id="link-list">
+                <!-- Lista de links será carregada aqui -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let editMode = false;
+        let currentEditIndex = null;
+
+        // Carregar o nome e imagem da brand da URL
+        function loadBrand() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const brandName = urlParams.get('name');
+            document.getElementById('brand-title').textContent = brandName;
+
+            // Carregar imagem da brand
+            const items = JSON.parse(localStorage.getItem('brands')) || [];
+            const brand = items.find(item => item.name === brandName);
+
+            if (brand && brand.image) {
+                document.getElementById('brand-image').src = brand.image;
+                document.getElementById('brand-image').style.display = 'block';
+            } else {
+                document.getElementById('brand-image').src = './icons/default-image.svg';
+                document.getElementById('brand-image').style.display = 'block';
+            }
+
+            loadLinks(brandName);
+        }
+
+        // Função para alternar o modo de edição
+        function toggleEditMode() {
+            editMode = !editMode;
+            document.querySelectorAll('.edit-button, .remove-button, .remove-brand-button').forEach(button => {
+                button.style.display = editMode ? 'block' : 'none';
+            });
+        }
+
+        // Função para exibir/ocultar o formulário de adicionar link
+        function toggleAddLinkForm(edit = false) {
+            const form = document.getElementById('add-link-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+
+            // Ajustar título e botão de salvar para adicionar ou editar
+            document.getElementById('link-form-title').textContent = edit ? 'Edit Link' : 'Add New Link';
+        }
+
+        // Função para adicionar ou salvar edição do link
+        function saveLink() {
+            const brandName = document.getElementById('brand-title').textContent.trim();
+            const linkName = document.getElementById('link-name').value.trim();
+            const linkUrl = document.getElementById('link-url').value.trim();
+
+            if (!linkName || !linkUrl) {
+                alert('Please enter valid link details.');
+                return;
+            }
+
+            // Obter links do localStorage
+            const links = JSON.parse(localStorage.getItem('brandLinks')) || {};
+            if (!links[brandName]) {
+                links[brandName] = [];
+            }
+
+            if (currentEditIndex !== null) {
+                links[brandName][currentEditIndex] = { name: linkName, url: linkUrl };
+                currentEditIndex = null;
+            } else {
+                links[brandName].push({ name: linkName, url: linkUrl });
+            }
+
+            localStorage.setItem('brandLinks', JSON.stringify(links));
+            loadLinks(brandName);
+            document.getElementById('link-name').value = '';
+            document.getElementById('link-url').value = '';
+            toggleAddLinkForm();
+        }
+
+        // Função para carregar links da brand
+        function loadLinks(brandName) {
+            const links = JSON.parse(localStorage.getItem('brandLinks')) || {};
+            const brandLinks = links[brandName] || [];
+
+            const linkList = document.getElementById('link-list');
+            linkList.innerHTML = '';
+
+            brandLinks.forEach((link, index) => {
+                displayLink(link.name, link.url, index);
+            });
+
+            // Ativar SortableJS para o link-list
+            new Sortable(linkList, {
+                animation: 150,
+                onEnd: function(evt) {
+                    const updatedLinks = [];
+                    linkList.querySelectorAll('.link-card').forEach(card => {
+                        const linkIndex = card.dataset.index;
+                        updatedLinks.push(links[brandName][linkIndex]);
+                    });
+                    links[brandName] = updatedLinks;
+                    localStorage.setItem('brandLinks', JSON.stringify(links));
+                }
+            });
+        }
+
+        // Exibir um link na lista
+        function displayLink(linkName, linkUrl, index) {
+            const linkList = document.getElementById('link-list');
+            const linkDiv = document.createElement('div');
+            linkDiv.className = 'link-card';
+            linkDiv.dataset.index = index;
+
+            let iconSrc = './icons/folder-icon.svg';
+            if (linkUrl.toLowerCase().includes('powerbi') || 
+                linkUrl.toLowerCase().includes('tableau') || 
+                linkUrl.toLowerCase().includes('lookerstudio')) {
+                iconSrc = './icons/dashboard-icon.svg';
+            }
+
+            linkDiv.innerHTML = `
+                <div class="remove-button" onclick="removeLink(${index})">
+                    <img src="./icons/x-icon.svg" alt="Remove">
+                </div>
+                <img src="${iconSrc}" alt="icon" class="link-icon">
+                <h3>${linkName}</h3>
+                <button class="edit-button" onclick="editLink(${index})">Edit</button>
+            `;
+
+            linkDiv.onclick = function(event) {
+                if (event.target.tagName !== 'BUTTON' && event.target.tagName !== 'IMG') {
+                    window.open(linkUrl, '_blank');
+                }
+            };
+
+            linkList.appendChild(linkDiv);
+        }
+
+        // Função para remover um link
+        function removeLink(index) {
+            const brandName = document.getElementById('brand-title').textContent.trim();
+            const links = JSON.parse(localStorage.getItem('brandLinks')) || {};
+
+            if (links[brandName]) {
+                links[brandName].splice(index, 1);
+                localStorage.setItem('brandLinks', JSON.stringify(links));
+                loadLinks(brandName);
+            }
+        }
+
+        // Função para remover a brand
+        function removeBrand() {
+            const brandName = document.getElementById('brand-title').textContent.trim();
+            const confirmation = confirm(`Would you like to delete ${brandName}?`);
+            if (confirmation) {
+                let brands = JSON.parse(localStorage.getItem('brands')) || [];
+                brands = brands.filter(brand => brand.name !== brandName);
+                localStorage.setItem('brands', JSON.stringify(brands));
+                localStorage.removeItem('brandLinks', JSON.stringify(brandName));
+                window.location.href = 'index.html';
+            }
+        }
+
+        window.onload = loadBrand;
+    </script>
+</body>
+</html>

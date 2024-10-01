@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="107" height="107" viewBox="0 0 107 107">
+  <defs>
+    <clipPath id="clip-menu-icon">
+      <rect width="107" height="107"/>
+    </clipPath>
+  </defs>
+  <g id="menu-icon" clip-path="url(#clip-menu-icon)">
+    <rect id="Rectangle_4" data-name="Rectangle 4" width="107" height="107" rx="20" fill="#949494"/>
+    <rect id="Rectangle_5" data-name="Rectangle 5" width="76" height="12" rx="6" transform="translate(16 25)" fill="#fff"/>
+    <rect id="Rectangle_6" data-name="Rectangle 6" width="76" height="12" rx="6" transform="translate(16 71)" fill="#fff"/>
+    <rect id="Rectangle_7" data-name="Rectangle 7" width="76" height="12" rx="6" transform="translate(16 48)" fill="#fff"/>
+  </g>
+</svg>
